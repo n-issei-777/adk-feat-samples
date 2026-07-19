@@ -39,17 +39,59 @@ def to_mcp_server(
 
 ## How to run
 
+Dependencies are managed at the repo root with uv (see the top-level README).
+
 ```bash
-pip install -r requirements.txt
+# From the repo root: create the environment once
+uv sync
 
 # Start as an MCP server over the stdio transport
-python agent.py
+uv run python samples/to_mcp_server/agent.py
 ```
 
-Once running, register this server (the `fruit_expert` tool) in your MCP host to
-call the agent from the host. To expose it over a network instead, change
-`transport="stdio"` to `"streamable-http"` in `agent.py`.
+### What to expect
 
-> Note: to actually get a response from the agent you need Gemini API
-> credentials (e.g. `GOOGLE_API_KEY`). This sample is a minimal demonstration of
-> how to use `to_mcp_server`.
+On startup you will see a few `UserWarning` lines about experimental features —
+these are expected, not errors. After them, a startup message is printed and the
+process **blocks with no further output**: a stdio MCP server silently waits for
+a client to connect over stdin/stdout. That "nothing happens" state is success.
+Press `Ctrl+C` to stop.
+
+`python agent.py` only starts the server. To actually call the agent you need:
+
+1. An **MCP host/client** to drive it (see below), and
+2. **Gemini API credentials** (e.g. `export GOOGLE_API_KEY=...`) so the agent can respond.
+
+### Verify it works (no Node, no API key)
+
+`try_client.py` is a tiny Python MCP client (uses the `mcp` package already in
+the environment). It launches the server, runs the MCP handshake, and lists the
+exposed tool — a self-contained smoke test that needs no API key:
+
+```bash
+uv run python samples/to_mcp_server/try_client.py
+```
+
+Expected output:
+
+```
+Tools exposed by the server:
+  - fruit_expert: An assistant that answers fun facts about fruit.
+```
+
+Set `GOOGLE_API_KEY` first and the same script will also call the tool and print
+the agent's real response.
+
+### Alternative: the MCP Inspector (needs Node)
+
+If you have Node, the [MCP Inspector](https://github.com/modelcontextprotocol/inspector)
+gives a browser UI to connect and call the tool:
+
+```bash
+npx @modelcontextprotocol/inspector uv run python samples/to_mcp_server/agent.py
+```
+
+### Register in an MCP host
+
+To expose it over a network instead of stdio, change `transport="stdio"` to
+`"streamable-http"` in `agent.py`.

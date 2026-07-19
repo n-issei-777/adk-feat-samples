@@ -14,6 +14,19 @@ New feat merged into ADK → pick the target PR → generate a sample using the 
 - **Selection**: for now, you pick the PR yourself.
 - **Generation**: one feature = one directory, following the standard structure below.
 
+## Setup
+
+Dependencies are managed with [uv](https://docs.astral.sh/uv/) and `pyproject.toml`
+(a single virtual environment shared by all samples).
+
+```bash
+# Create the virtual environment from the lockfile
+uv sync
+
+# Run a sample
+uv run python samples/to_mcp_server/agent.py
+```
+
 ## Standard sample structure
 
 Each sample lives in `samples/<feature_slug>/` and must include:
@@ -21,13 +34,13 @@ Each sample lives in `samples/<feature_slug>/` and must include:
 ```
 samples/<feature_slug>/
 ├── README.md      # feature description, link to source PR/commit, how to run
-├── agent.py       # minimal working sample using the feature
-└── requirements.txt
+└── agent.py       # minimal working sample using the feature
 ```
 
-`README.md` must start with a **metadata** table (source PR number / commit / ADK
-version / whether it is experimental). For reproducibility, verify against the
-actual ADK source rather than guessing.
+Runtime dependencies are declared once in the root `pyproject.toml`, not per
+sample. `README.md` must start with a **metadata** table (source PR number /
+commit / ADK version / whether it is experimental). For reproducibility, verify
+against the actual ADK source rather than guessing.
 
 ## Sample index
 

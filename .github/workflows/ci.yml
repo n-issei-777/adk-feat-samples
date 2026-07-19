@@ -16,30 +16,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          enable-cache: true
 
-      - name: Install ADK
-        run: |
-          python -m pip install --upgrade pip
-          pip install "google-adk>=2.5.0" mcp
+      - name: Sync environment (uv + pyproject.toml)
+        run: uv sync --locked
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
 
       - name: Syntax check all samples (py_compile)
-        run: |
-          python -m compileall -q samples
+        run: uv run python -m compileall -q samples
 
       - name: Import smoke test each sample
         run: |
-          # 各サンプルの agent.py を import して、モジュール読み込み時に
-          # 例外（experimental未有効化など）が出ないことを確認する。
-          # server.run() を走らせないよう __main__ ガードは実行されない。
+          # Import each sample's agent.py and confirm no exception is raised on
+          # module load (e.g. an experimental feature left un-enabled).
+          # The __main__ guard is not executed, so server.run() never starts.
           set -e
           for agent in samples/*/agent.py; do
             dir="$(dirname "$agent")"
             echo "::group::import $agent"
-            (cd "$dir" && python -c "import importlib.util, pathlib; \
+            (cd "$dir" && uv run python -c "import importlib.util, pathlib; \
               spec = importlib.util.spec_from_file_location('sample_agent', 'agent.py'); \
               mod = importlib.util.module_from_spec(spec); \
               spec.loader.exec_module(mod); \

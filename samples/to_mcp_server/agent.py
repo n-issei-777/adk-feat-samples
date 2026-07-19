@@ -48,4 +48,17 @@ server = to_mcp_server(
 if __name__ == "__main__":
     # 3) Choose a transport and start the server.
     #    Use "stdio" for a local MCP host, or "streamable-http" over a network.
+    #
+    #    NOTE: a stdio MCP server produces no visible output while running -- it
+    #    silently waits for an MCP client to connect over stdin/stdout. That
+    #    "nothing happens" state IS success. Press Ctrl+C to stop. To actually
+    #    call the agent, register this server in an MCP host (see README).
+    import sys
+
+    print(
+        "Serving agent 'fruit_expert' as an MCP server over stdio. "
+        "Waiting for an MCP client... (Ctrl+C to stop)",
+        file=sys.stderr,
+        flush=True,
+    )
     server.run(transport="stdio")

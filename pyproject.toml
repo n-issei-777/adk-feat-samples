@@ -1,0 +1,15 @@
+[project]
+name = "adk-feat-samples"
+version = "0.1.0"
+description = "Minimal sample agents for newly merged ADK features."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "google-adk>=2.5.0",
+    "mcp",
+]
+
+[tool.uv]
+# This repo is a collection of runnable sample scripts, not an installable
+# package, so uv should not try to build/install the project itself.
+package = false

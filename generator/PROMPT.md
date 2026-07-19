@@ -12,11 +12,14 @@ Given one ADK feature PR, produce `samples/<feature_slug>/` using the steps belo
 2. **Experimental check**: check whether it is registered as `@experimental` in
    `src/google/adk/features/_feature_registry.py`, and state this in the README.
 3. **Write a minimal sample**: the shortest working example that uses the feature.
-   Do not add unnecessary dependencies.
+   Do not add unnecessary dependencies. If the sample needs a package not already
+   in the root `pyproject.toml`, add it there and refresh the lockfile with
+   `uv lock` (do not create per-sample requirements files).
 4. **README**: start with a metadata table (source PR/commit, ADK ver, experimental)
    → a one or two line description of the feature → how to run.
-5. **Verify**: run `python -m py_compile agent.py` for a syntax check. If possible,
-   confirm the import works.
+5. **Verify**: run `uv run python -m py_compile samples/<feature_slug>/agent.py`
+   for a syntax check, and confirm the import works with
+   `uv run python -c "import ..."` if possible.
 6. Add one row to the sample index table in the top-level `README.md`.
 
 ## How to pick feature_slug
