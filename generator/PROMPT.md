@@ -1,29 +1,40 @@
-# サンプル生成プロンプト（テンプレート）
+# Sample generation prompt (template)
 
-ADKの新機能PRを1つ渡されたら、以下の手順で `samples/<feature_slug>/` を作る。
+Given one ADK feature PR, produce `samples/<feature_slug>/` using the steps below.
 
-## 入力
-- 対象PR（URL or 番号）、または commit hash / CHANGELOG の1行
+## Input
+- Target PR (URL or number), or a commit hash / a single CHANGELOG line
 
-## 手順
-1. **実物確認（必須・幻覚禁止）**: cloneした `adk-python` 内で、その機能の実装・公開import・シグネチャ・docstringを `grep` / 読み込みで確認する。docstring の Example があれば最優先で踏襲する。
-2. **experimental判定**: `src/google/adk/features/_feature_registry.py` に `@experimental` 対象として載っているか確認し、READMEに明記する。
-3. **最小サンプルを書く**: その機能を使う一番短い動作例。余計な依存は足さない。
-4. **README**: 冒頭にメタ情報テーブル（元PR/commit・ADK ver・experimental）→ 機能の1〜2行説明 → 実行方法。
-5. **検証**: `python -m py_compile agent.py` で構文チェック。可能なら `import` 確認。
-6. トップの `README.md` のサンプル一覧テーブルに1行追記する。
+## Steps
+1. **Verify against the real source (required, no guessing)**: in the cloned
+   `adk-python`, confirm the feature's implementation, public import, signature,
+   and docstring via `grep` / reading. If the docstring has an Example, follow it first.
+2. **Experimental check**: check whether it is registered as `@experimental` in
+   `src/google/adk/features/_feature_registry.py`, and state this in the README.
+3. **Write a minimal sample**: the shortest working example that uses the feature.
+   Do not add unnecessary dependencies.
+4. **README**: start with a metadata table (source PR/commit, ADK ver, experimental)
+   → a one or two line description of the feature → how to run.
+5. **Verify**: run `python -m py_compile agent.py` for a syntax check. If possible,
+   confirm the import works.
+6. Add one row to the sample index table in the top-level `README.md`.
 
-## feature_slug の決め方
-公開APIのシンボル名をそのまま使う（例: `to_mcp_server`）。名前が広い機能はPRの主題を短く（例: `workflow_input_validation`）。
+## How to pick feature_slug
+Use the public API symbol name directly (e.g. `to_mcp_server`). For a broad feature,
+use a short phrase for the PR's subject (e.g. `workflow_input_validation`).
 
 ---
 
-## 将来の自動検知メモ（未実装）
+## Notes on future automated detection (not implemented)
 
-merged PR / 新Release を拾う案:
+Options for picking up merged PRs / new releases:
 
-- **GitHub Releases API**: `GET /repos/google/adk-python/releases` の最新 body（= CHANGELOGのFeatures節）を差分で見る。安定・低コスト。
-- **Search merged PRs**: `GET /search/issues?q=repo:google/adk-python+is:pr+is:merged+label:...`。粒度は細かいが認証と絞り込みが必要。
-- CHANGELOG.md の `### Features` 節を前回処理分と比較するのが一番手堅い。
+- **GitHub Releases API**: diff the latest body of `GET /repos/google/adk-python/releases`
+  (i.e. the Features section of the CHANGELOG). Stable and low-cost.
+- **Search merged PRs**: `GET /search/issues?q=repo:google/adk-python+is:pr+is:merged+label:...`.
+  Finer-grained but needs auth and filtering.
+- Comparing the `### Features` section of CHANGELOG.md against the previously
+  processed one is the most robust approach.
 
-いずれも「新featのcommit hash + 一言タイトル」が取れれば、上の手順に流し込める。
+In all cases, once you have "the new feat's commit hash + a one-line title", it can
+be fed into the steps above.

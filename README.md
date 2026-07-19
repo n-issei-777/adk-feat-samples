@@ -1,37 +1,42 @@
 # adk-feat-samples
 
-ADK（[google/adk-python](https://github.com/google/adk-python)）に**新しくマージされた機能ごとに、その機能を使った最小のサンプルエージェント**を作って蓄積していくリポジトリ。
+For each feature newly merged into ADK ([google/adk-python](https://github.com/google/adk-python)),
+this repo collects a **minimal sample agent that uses that feature**.
 
-## 構想（全体パイプライン）
+## Concept (overall pipeline)
 
 ```
-ADKに新featがマージ → 対象PRを選ぶ → featを使ったサンプルを生成 → このrepoにコミット
-        (GitHub API)        (今は手動)         (このテンプレートで)
+New feat merged into ADK → pick the target PR → generate a sample using the feat → commit to this repo
+        (GitHub API)          (manual for now)        (via this template)
 ```
 
-- **検知**: 将来は GitHub の merged PR / Release API で新機能を拾う想定（`generator/` にメモ）。
-- **選定**: 現状は自分でPRを選ぶ。
-- **生成**: 1機能 = 1ディレクトリ。下記の標準構造で作る。
+- **Detection**: eventually pick up new features from GitHub merged PRs / the Release API (notes in `generator/`).
+- **Selection**: for now, you pick the PR yourself.
+- **Generation**: one feature = one directory, following the standard structure below.
 
-## サンプルの標準構造
+## Standard sample structure
 
-各サンプルは `samples/<feature_slug>/` に置き、必ず次を含める。
+Each sample lives in `samples/<feature_slug>/` and must include:
 
 ```
 samples/<feature_slug>/
-├── README.md      # 機能の説明・元PR/commitへのリンク・実行方法
-├── agent.py       # その機能を使った最小の動くサンプル
+├── README.md      # feature description, link to source PR/commit, how to run
+├── agent.py       # minimal working sample using the feature
 └── requirements.txt
 ```
 
-`README.md` は必ず先頭に **メタ情報**（元PR番号・commit・ADKバージョン・experimental か否か）を書く。再現性のため、幻覚ではなく実際のADKソースを確認して書くこと。
+`README.md` must start with a **metadata** table (source PR number / commit / ADK
+version / whether it is experimental). For reproducibility, verify against the
+actual ADK source rather than guessing.
 
-## サンプル一覧
+## Sample index
 
-| feature | 元commit | ADK ver | 状態 |
+| feature | source commit | ADK ver | status |
 |---|---|---|---|
-| [to_mcp_server](samples/to_mcp_server/) — ADKエージェントをMCPサーバとして公開 | `50ff37f` | 2.5.0 | ✅ 試作 |
+| [to_mcp_server](samples/to_mcp_server/) — expose an ADK agent as an MCP server | `50ff37f` | 2.5.0 | ✅ prototype |
 
-## ジェネレータ
+## Generator
 
-`generator/PROMPT.md` に「PRを渡したらこの構造でサンプルを生成する」ための指示テンプレートを置いている。今は人間（＋アシスタント）が実行する運用。将来的に自動化する場合の検知メモも同ファイル内。
+`generator/PROMPT.md` holds the instruction template for "given a PR, generate a
+sample in this structure." For now it is run by a human (+ assistant). Notes on a
+future automated detection step live in the same file.
