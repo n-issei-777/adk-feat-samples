@@ -22,9 +22,15 @@ from mcp.client.stdio import stdio_client
 
 async def main() -> None:
     # Launch this repo's agent.py as a stdio MCP server, in the same interpreter.
+    #
+    # `env=os.environ.copy()` is important: by default stdio_client passes only a
+    # minimal safe environment to the child process and drops variables like
+    # GOOGLE_API_KEY, so the server would fail with "No API key was provided".
+    # Forwarding the current environment lets the agent see the key.
     server = StdioServerParameters(
         command=sys.executable,
         args=["samples/to_mcp_server/agent.py"],
+        env=os.environ.copy(),
     )
 
     async with stdio_client(server) as (read, write):
