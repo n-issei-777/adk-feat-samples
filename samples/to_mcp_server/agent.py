@@ -27,7 +27,8 @@ override_feature_enabled(FeatureName.MCP_AGENT_SERVER, True)
 # 1) Define the agent you want to expose, as usual.
 root_agent = LlmAgent(
     name="fruit_expert",
-    model="gemini-2.5-flash",
+    # Model names change/retire over time; use a currently-available Gemini model.
+    model="gemini-3.5-flash",
     description="An assistant that answers fun facts about fruit.",
     instruction=(
         "You are a fruit expert. For any fruit you are asked about, answer "
