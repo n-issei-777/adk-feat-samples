@@ -47,6 +47,7 @@ against the actual ADK source rather than guessing.
 | feature | source commit | ADK ver | status |
 |---|---|---|---|
 | [to_mcp_server](samples/to_mcp_server/) — expose an ADK agent as an MCP server | `50ff37f` | 2.5.0 | ✅ prototype |
+| [jinja2_instructions](samples/jinja2_instructions/) — Jinja2-rendered agent instructions (`inject_session_state(use_jinja2=True)`) | `4a00a34` | 2.7.0 | ✅ verified |
 | [workflow_graph](samples/workflow_graph/) — Workflow graph engine (fan-out / fan-in) | `be5828f` | 2.0.0 GA | ✅ verified |
 | [workflow_vs_legacy_routing](samples/workflow_vs_legacy_routing/) — 1.x hand-written router vs 2.x `edges` | `be5828f` | 2.0.0 GA | ✅ verified |
 
