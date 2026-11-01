@@ -12,10 +12,8 @@ Run:
 from __future__ import annotations
 
 from google.adk.agents import LlmAgent
-from google.adk.features import FeatureName
-from google.adk.features import override_feature_enabled
+from google.adk.features import FeatureName, override_feature_enabled
 from google.adk.tools.mcp_tool import to_mcp_server
-
 
 # 0) `to_mcp_server` is an experimental feature and must be explicitly enabled.
 #    Calling it without enabling raises RuntimeError.

@@ -26,8 +26,7 @@ Runs with NO API key (every node is a plain function).
 
 from __future__ import annotations
 
-from google.adk import Event
-from google.adk import Workflow
+from google.adk import Event, Workflow
 
 
 # A router node: it writes the ticket into shared state, then emits a *route*

@@ -201,6 +201,7 @@ def _main() -> None:
         session_id=session.id,
         filename="note.txt",
     )
+    assert note is not None
     session.state["note_text"] = note.text
 
     invocation_context = InvocationContext(

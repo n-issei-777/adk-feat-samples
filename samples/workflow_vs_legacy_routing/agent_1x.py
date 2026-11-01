@@ -28,7 +28,7 @@ much orchestration you must hand-write to get there.
 
 from __future__ import annotations
 
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from google.adk.agents import BaseAgent
 from google.adk.agents.invocation_context import InvocationContext
@@ -88,7 +88,8 @@ class TicketRouter(BaseAgent):
       self, ctx: InvocationContext
   ) -> AsyncGenerator[Event, None]:
     # Read the user input by hand (no node_input plumbing in 1.x).
-    ticket = ctx.user_content.parts[0].text
+    assert ctx.user_content is not None and ctx.user_content.parts
+    ticket = ctx.user_content.parts[0].text or ""
     ctx.session.state["ticket"] = ticket
 
     # Classify + branch selection: hand-coded.

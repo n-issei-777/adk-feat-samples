@@ -1,5 +1,7 @@
 # adk-feat-samples
 
+[![verify-samples](https://github.com/n-issei-777/adk-feat-samples/actions/workflows/ci.yml/badge.svg)](https://github.com/n-issei-777/adk-feat-samples/actions/workflows/ci.yml)
+
 For each feature newly merged into ADK ([google/adk-python](https://github.com/google/adk-python)),
 this repo collects a **minimal sample agent that uses that feature**.
 
@@ -56,3 +58,8 @@ against the actual ADK source rather than guessing.
 `generator/PROMPT.md` holds the instruction template for "given a PR, generate a
 sample in this structure." For now it is run by a human (+ assistant). Notes on a
 future automated detection step live in the same file.
+
+## Disclaimer
+
+This repository is a personal collection of feature examples and is not an officially supported Google product.
+
